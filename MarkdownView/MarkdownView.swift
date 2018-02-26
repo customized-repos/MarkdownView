@@ -86,7 +86,9 @@ open class MarkdownView: UIView {
 extension MarkdownView: WKNavigationDelegate {
 
   public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-    let script = "document.body.offsetHeight;"
+    // 注：margin重叠导致body高度和html高度不一致，需以html高度为准。
+    //let script = "document.body.offsetHeight;"
+    let script = "document.documentElement.getBoundingClientRect().height"
     webView.evaluateJavaScript(script) { [weak self] result, error in
       if let _ = error { return }
 

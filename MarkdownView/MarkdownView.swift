@@ -32,7 +32,12 @@ open class MarkdownView: UIView {
   }
 
   public func load(markdown: String?, enableImage: Bool = true) {
-    guard let markdown = markdown else { return }
+    guard var markdown = markdown else { return }
+    // 如果是以分割线开始的markdown样式就会加载不出来分割线下边的东西
+    // 只有在分割线前边插入一个换行符或者空格(效果都是新增一行)
+    if markdown.hasPrefix("<hr>") {
+        markdown.insert(contentsOf: "<br>", at: markdown.startIndex)
+    }
 
     let bundle = Bundle(for: MarkdownView.self)
 
